@@ -1,0 +1,4 @@
+Django==1.11.2
+simplejson==3.10.0
+django-multiselectfield
+Pillow
