@@ -860,9 +860,6 @@ def procesarPerfilAlumno(request):
             fav = request.POST.get("switch"+str(i))
             if fav != "":
                 aEliminar.append(fav)
-        print(request.POST)
-        print(request.FILES)
-        print(aEliminar)
 
         if nuevoNombre != "":
             if Usuario.objects.filter(nombre=nuevoNombre).exists():
@@ -898,7 +895,6 @@ def borrarUsuario(request):
 def agregarAvatar(request):
     if request.is_ajax() or request.method == 'FILES':
         imagen = request.FILES.get("image")
-        print(request.FILES)
         nuevaImagen = Imagen(imagen=imagen)
         nuevaImagen.save()
         return HttpResponse("Success")
@@ -973,22 +969,18 @@ def editarUsuario(request):
             if (userID != None):
                 print("id:"+userID)
             if (forma0 != None):
-                print("forma0:" + forma0)
                 nuevaListaFormasDePago+="0"
             if (forma1 != None):
-                print("forma1:" + forma1)
                 if(len(nuevaListaFormasDePago)!=0):
                     nuevaListaFormasDePago += ",1"
                 else:
                     nuevaListaFormasDePago += "1"
             if (forma2 != None):
-                print("forma2:" + forma2)
                 if (len(nuevaListaFormasDePago) != 0):
                     nuevaListaFormasDePago += ",2"
                 else:
                     nuevaListaFormasDePago += "2"
             if (forma3 != None):
-                print("forma3:" + forma3)
                 if (len(nuevaListaFormasDePago) != 0):
                     nuevaListaFormasDePago += ",3"
                 else:
