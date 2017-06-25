@@ -271,14 +271,8 @@ def loginReq(request):
         if tipo == 2 or tipo == 3:
             i = 0
             for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
-                listaDeProductos.append([])
-                listaDeProductos[i].append(producto.nombre)
-                categoria = str(producto.categorias)
-                listaDeProductos[i].append(categoria)
-                listaDeProductos[i].append(producto.stock)
-                listaDeProductos[i].append(producto.precio)
-                listaDeProductos[i].append(producto.descripcion)
-                listaDeProductos[i].append(str(producto.imagen))
+                listaDeProductos.append(producto.info())
+
                 i += 1
 
         listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
@@ -413,14 +407,8 @@ def productoReq(request):
     i = 0
     listaDeProductos = []
     for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
-        listaDeProductos.append([])
-        listaDeProductos[i].append(producto.nombre)
-        categoria = str(producto.categorias)
-        listaDeProductos[i].append(categoria)
-        listaDeProductos[i].append(producto.stock)
-        listaDeProductos[i].append(producto.precio)
-        listaDeProductos[i].append(producto.descripcion)
-        listaDeProductos[i].append(str(producto.imagen))
+        listaDeProductos.append(producto.info())
+
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
 
@@ -460,14 +448,8 @@ def vistaVendedorPorAlumno(request):
     i = 0
     listaDeProductos = []
     for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
-        listaDeProductos.append([])
-        listaDeProductos[i].append(producto.nombre)
-        categoria = str(producto.categorias)
-        listaDeProductos[i].append(categoria)
-        listaDeProductos[i].append(producto.stock)
-        listaDeProductos[i].append(producto.precio)
-        listaDeProductos[i].append(producto.descripcion)
-        listaDeProductos[i].append(str(producto.imagen))
+        listaDeProductos.append(producto.info())
+
         i += 1
     avatarSesion = request.session['avatar']
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
@@ -499,14 +481,7 @@ def vistaVendedorPorAlumnoSinLogin(request):
     i = 0
     listaDeProductos = []
     for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
-        listaDeProductos.append([])
-        listaDeProductos[i].append(producto.nombre)
-        categoria = str(producto.categorias)
-        listaDeProductos[i].append(categoria)
-        listaDeProductos[i].append(producto.stock)
-        listaDeProductos[i].append(producto.precio)
-        listaDeProductos[i].append(producto.descripcion)
-        listaDeProductos[i].append(str(producto.imagen))
+        listaDeProductos.append(producto.info())
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
     return render(request, url,
@@ -560,6 +535,7 @@ def editarDatos(request):
             # actualizar vendedores fijos
         for p in Usuario.objects.raw('SELECT * FROM usuario'):
             p.actualizar()
+
     avatar = request.FILES.get("avatar")
     formasDePago = ""
     if not (request.POST.get("formaDePago0") is None) and request.POST.get("formaDePago0") != "":
@@ -611,14 +587,7 @@ def redirigirEditar(id_vendedor, request):
         url = ''
         argumentos = {}
         for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id_vendedor) + '"'):
-            listaDeProductos.append([])
-            listaDeProductos[i].append(producto.nombre)
-            categoria = str(producto.categorias)
-            listaDeProductos[i].append(categoria)
-            listaDeProductos[i].append(producto.stock)
-            listaDeProductos[i].append(producto.precio)
-            listaDeProductos[i].append(producto.descripcion)
-            listaDeProductos[i].append(str(producto.imagen))
+            listaDeProductos.append(producto.info())
             i += 1
 
         listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')

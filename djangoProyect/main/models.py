@@ -102,6 +102,16 @@ class Comida(models.Model):
     class Meta:
         db_table = 'Comida'
 
+    def info(self):
+        listaDeProductos=[]
+        listaDeProductos.append(self.nombre)
+        categoria = str(self.categorias)
+        listaDeProductos.append(categoria)
+        listaDeProductos.append(self.stock)
+        listaDeProductos.append(self.precio)
+        listaDeProductos.append(self.descripcion)
+        listaDeProductos.append(str(self.imagen))
+        return listaDeProductos
 
 class Favoritos(models.Model):
     id = models.AutoField(primary_key=True)
