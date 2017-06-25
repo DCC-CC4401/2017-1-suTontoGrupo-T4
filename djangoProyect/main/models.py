@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from multiselectfield import MultiSelectField
 from django.utils import timezone
@@ -29,6 +30,40 @@ class Usuario(models.Model):
 
     class Meta:
         db_table = 'usuario'
+
+    def actualizar(self):
+        if self.tipo == 2:
+            hi = self.horarioIni
+            hf = self.horarioFin
+            horai = hi[:2]
+            horaf = hf[:2]
+            mini = hi[3:5]
+            minf = hf[3:5]
+
+            tiempo = str(datetime.datetime.now().time())
+
+            hora = tiempo[:2]
+            minutos = tiempo[3:5]
+            estado = ""
+            if horaf >= hora and hora >= horai:
+                if horai == hora:
+                    if minf >= minutos and minutos >= mini:
+                        estado = "activo"
+                    else:
+                        estado = "inactivo"
+                elif horaf == hora:
+                    if minf >= minutos and minutos >= mini:
+                        estado = "activo"
+                    else:
+                        estado = "inactivo"
+                else:
+                    estado = "activo"
+            else:
+                estado = "inactivo"
+            if estado == "activo":
+                Usuario.objects.filter(nombre=self.nombre).update(activo=1)
+            else:
+                Usuario.objects.filter(nombre=self.nombre).update(activo=0)
 
 
 
