@@ -5,6 +5,7 @@ import sure
 from PIL import Image
 from io import BytesIO
 
+
 def mock_image(size):
     """
     Crea una imagen de tamano size en memoria para testear con los modelos
@@ -12,30 +13,32 @@ def mock_image(size):
     @returns: BytesIO file
     """
     file = BytesIO()
-    image = Image.new('RGBA', size=size, color=(255,255,255))
+    image = Image.new('RGBA', size=size, color=(255, 255, 255))
     image.save(file, 'png')
     file.seek(0)
     return File(file)
 
 
-class UsuarioTestCase (TestCase):
+class UsuarioTestCase(TestCase):
     def setUp(self):
         im = mock_image((200, 200))
-        Usuario.objects.create(id=1,
-                               nombre="Estudiante",
-                               email="a@a",
-                               tipo=1,
-                               avatar=im,
-                               contraseña='asd1234')
-        Usuario.objects.create(id=2,
-                               nombre="VendedorFijo",
-                               email="s@s",
-                               tipo=2,
-                               avatar=im,
-                               contraseña='asd1234',
-                               formasDePago='0,1,2,3',
-                               horarioIni='11:12',
-                               horarioFin='12:12')
+        Usuario.objects.create(
+            id=1,
+            nombre="Estudiante",
+            email="a@a",
+            tipo=1,
+            avatar=im,
+            contraseña='asd1234')
+        Usuario.objects.create(
+            id=2,
+            nombre="VendedorFijo",
+            email="s@s",
+            tipo=2,
+            avatar=im,
+            contraseña='asd1234',
+            formasDePago='0,1,2,3',
+            horarioIni='11:12',
+            horarioFin='12:12')
 
     def test_attrs(self):
         estudiante = Usuario.objects.get(id=1)
@@ -60,28 +63,29 @@ class UsuarioTestCase (TestCase):
         vendedor_fijo.horarioFin.should.equal('12:12')
 
 
-
-class ComidaTestCase (TestCase):
+class ComidaTestCase(TestCase):
     def setUp(self):
         im = mock_image((200, 200))
-        Usuario.objects.create(id=1,
-                               nombre="vendedor",
-                               email="a@a",
-                               tipo=2,
-                               avatar=im,
-                               contraseña='asd1234',
-                               formasDePago='0,1,2,3',
-                               horarioIni='11:12',
-                               horarioFin='12:12')
+        Usuario.objects.create(
+            id=1,
+            nombre="vendedor",
+            email="a@a",
+            tipo=2,
+            avatar=im,
+            contraseña='asd1234',
+            formasDePago='0,1,2,3',
+            horarioIni='11:12',
+            horarioFin='12:12')
 
-        Comida.objects.create(id=1,
-                              idVendedor=1,
-                              nombre="pasta con carne",
-                              categorias='10',
-                              descripcion='desc pasta con carne',
-                              stock=10,
-                              precio=200,
-                              imagen=im)
+        Comida.objects.create(
+            id=1,
+            idVendedor=1,
+            nombre="pasta con carne",
+            categorias='10',
+            descripcion='desc pasta con carne',
+            stock=10,
+            precio=200,
+            imagen=im)
 
     def test_attrs(self):
         pasta = Comida.objects.get(id=1)
@@ -92,7 +96,6 @@ class ComidaTestCase (TestCase):
         pasta.descripcion.should.equal('desc pasta con carne')
         pasta.stock.should.equal(10)
         pasta.precio.should.equal(200)
-        
 
-        Usuario.objects.get(id=pasta.idVendedor).nombre.should.equal('vendedor')
-
+        Usuario.objects.get(
+            id=pasta.idVendedor).nombre.should.equal('vendedor')
