@@ -38,9 +38,7 @@ def index(request):
             horaf = hf[:2]
             mini = hi[3:5]
             minf = hf[3:5]
-            print(datetime.datetime.now().time())
             tiempo = str(datetime.datetime.now().time())
-            print(tiempo)
             hora = tiempo[:2]
             minutos = tiempo[3:5]
             estado = ""
@@ -70,76 +68,14 @@ def index(request):
 def login(request):
     return render(request, 'main/login.html', {})
 
-
 def fijoDashboard(request):
-    print(request.POST)
-    id = request.POST.get("fijoId")
-    #id = str(id)
-
-
-    #transacciones hechas por hoy
-    transaccionesDiarias=Transacciones.objects.filter(idVendedor=id).values('fecha').annotate(conteo=Count('fecha'))
-    temp_transaccionesDiarias = list(transaccionesDiarias)
-    transaccionesDiariasArr = []
-    for element in temp_transaccionesDiarias:
-        aux = []
-        aux.append(element['fecha'])
-        aux.append(element['conteo'])
-        transaccionesDiariasArr.append(aux)
-    transaccionesDiariasArr=simplejson.dumps(transaccionesDiariasArr)
-    #print(transaccionesDiariasArr)
-
-    #ganancias de hoy
-    gananciasDiarias = Transacciones.objects.filter(idVendedor=id).values('fecha').annotate(ganancia=Sum('precio'))
-    temp_gananciasDiarias = list(gananciasDiarias)
-    gananciasDiariasArr = []
-    for element in temp_gananciasDiarias:
-        aux = []
-        aux.append(element['fecha'])
-        aux.append(element['ganancia'])
-        #print("AUX")
-        #print(aux)
-        gananciasDiariasArr.append(aux)
-    gananciasDiariasArr = simplejson.dumps(gananciasDiariasArr)
-    #print(gananciasDiariasArr)
-
-
-    #todos los productos del vendedor
-    productos = Comida.objects.filter(idVendedor=id).values('nombre','precio')
-    temp_productos = list(productos)
-    productosArr = []
-    productosPrecioArr = []
-    for element in temp_productos:
-        aux = []
-        productosArr.append(element['nombre'])
-        aux.append(element['nombre'])
-        aux.append(element['precio'])
-        productosPrecioArr.append(aux)
-    productosArr = simplejson.dumps(productosArr)
-    productosPrecioArr = simplejson.dumps(productosPrecioArr)
-    print(productosPrecioArr)
-
-    #productos vendidos hoy con su cantidad respectiva
-    fechaHoy = str(timezone.now()).split(' ', 1)[0]
-    productosHoy = Transacciones.objects.filter(idVendedor=id,fecha=fechaHoy).values('nombreComida').annotate(conteo=Count('nombreComida'))
-    temp_productosHoy = list(productosHoy)
-    productosHoyArr = []
-    for element in temp_productosHoy:
-        aux = []
-        aux.append(element['nombreComida'])
-        aux.append(element['conteo'])
-        productosHoyArr.append(aux)
-    productosHoyArr = simplejson.dumps(productosHoyArr)
-    #print(productosHoyArr)
-
-
-    return render(request, 'main/fijoDashboard.html', {"transacciones":transaccionesDiariasArr,"ganancias":gananciasDiariasArr,"productos":productosArr,"productosHoy":productosHoyArr,"productosPrecio":productosPrecioArr})
+    return vendedorDashboard(request, "fijoId")
 
 def ambulanteDashboard(request):
-    print(request.POST)
-    id = request.POST.get("ambulanteId")
-    #id = str(id)
+    return vendedorDashboard(request, "ambulanteId")
 
+def vendedorDashboard(request, cons_id):
+    id = request.POST.get(cons_id)
 
     #transacciones hechas por hoy
     transaccionesDiarias=Transacciones.objects.filter(idVendedor=id).values('fecha').annotate(conteo=Count('fecha'))
@@ -151,7 +87,6 @@ def ambulanteDashboard(request):
         aux.append(element['conteo'])
         transaccionesDiariasArr.append(aux)
     transaccionesDiariasArr=simplejson.dumps(transaccionesDiariasArr)
-    #print(transaccionesDiariasArr)
 
     #ganancias de hoy
     gananciasDiarias = Transacciones.objects.filter(idVendedor=id).values('fecha').annotate(ganancia=Sum('precio'))
@@ -161,11 +96,8 @@ def ambulanteDashboard(request):
         aux = []
         aux.append(element['fecha'])
         aux.append(element['ganancia'])
-        #print("AUX")
-        #print(aux)
         gananciasDiariasArr.append(aux)
     gananciasDiariasArr = simplejson.dumps(gananciasDiariasArr)
-    #print(gananciasDiariasArr)
 
 
     #todos los productos del vendedor
@@ -181,7 +113,6 @@ def ambulanteDashboard(request):
         productosPrecioArr.append(aux)
     productosArr = simplejson.dumps(productosArr)
     productosPrecioArr = simplejson.dumps(productosPrecioArr)
-    print(productosPrecioArr)
 
     #productos vendidos hoy con su cantidad respectiva
     fechaHoy = str(timezone.now()).split(' ', 1)[0]
@@ -194,24 +125,24 @@ def ambulanteDashboard(request):
         aux.append(element['conteo'])
         productosHoyArr.append(aux)
     productosHoyArr = simplejson.dumps(productosHoyArr)
-    #print(productosHoyArr)
 
-
-    return render(request, 'main/ambulanteDashboard.html', {"transacciones":transaccionesDiariasArr,"ganancias":gananciasDiariasArr,"productos":productosArr,"productosHoy":productosHoyArr,"productosPrecio":productosPrecioArr})
-
+    if cons_id == "fijoId":
+        vendedor_page = 'main/fijoDashboard.html'
+    else:
+        vendedor_page = 'main/ambulanteDashboard.html'
+    return render(request, vendedor_page,
+                      {"transacciones":transaccionesDiariasArr,
+                       "ganancias":gananciasDiariasArr,
+                       "productos":productosArr,
+                       "productosHoy":productosHoyArr,
+                       "productosPrecio":productosPrecioArr})
 
 def adminEdit(request):
-    print(request.POST)
     nombre = request.POST.get("adminName")
-    print(nombre)
     contraseña = request.POST.get("adminPassword")
-    print(contraseña)
     id = request.POST.get("adminId")
-    print(id)
     email = request.POST.get("adminEmail")
-    print(email)
     avatar = request.POST.get("adminAvatar")
-    print(avatar)
     return render(request, 'main/adminEdit.html', {"nombre" : nombre,"contraseña":contraseña,"id":id,"email":email,"avatar":avatar})
 
 def signup(request):
@@ -224,8 +155,6 @@ def loggedin(request):
     return render(request, 'main/loggedin.html', {})
 
 def loginAdmin(request):
-    print("POST: ")
-    print(request.POST)
     id = request.POST.get("userID")
     email = request.POST.get("email")
     avatar = "avatars/"+request.POST.get("fileName")
@@ -256,7 +185,6 @@ def adminPOST(id,avatar,email,nombre,contraseña,request):
         i += 1
     listaDeUsuarios = simplejson.dumps(datosUsuarios, ensure_ascii=False).encode('utf8')
     hola = "hola"
-    # print(listaDeUsuarios)
 
     # limpiar argumentos de salida segun tipo de vista
     argumentos = {"nombre":nombre,"id":id,"avatar":avatar,"email":email,"lista":listaDeUsuarios,"numeroUsuarios":numeroUsuarios,"numeroDeComidas":numeroDeComidas,"contraseña":contraseña}
@@ -442,7 +370,6 @@ def register(request):
     horaInicial = request.POST.get("horaIni")
     horaFinal = request.POST.get("horaFin")
     avatar = request.FILES.get("avatar")
-    print(avatar)
     formasDePago =[]
     if not (request.POST.get("formaDePago0") is None):
         formasDePago.append(request.POST.get("formaDePago0"))
@@ -624,7 +551,6 @@ def editarDatos(request):
     if (tipo == "2"):
         horaInicial = request.POST.get("horaIni")
         horaFinal = request.POST.get("horaFin")
-        print(tipo, horaInicial, horaFinal)
         if (not(horaInicial is None)):
             usuario.update(horarioIni=horaInicial)
         if (not(horaFinal is None)):
@@ -638,9 +564,7 @@ def editarDatos(request):
                 horaf = hf[:2]
                 mini = hi[3:5]
                 minf = hf[3:5]
-                print(datetime.datetime.now().time())
                 tiempo = str(datetime.datetime.now().time())
-                print(tiempo)
                 hora = tiempo[:2]
                 minutos = tiempo[3:5]
                 estado = ""
@@ -683,8 +607,6 @@ def editarDatos(request):
             for chunk in avatar.chunks():
                 destination.write(chunk)
         usuario.update(avatar='/avatars/'+ str(avatar))
-
-    print(id_vendedor)
     return redirigirEditar(id_vendedor, request)
 
 
@@ -738,7 +660,6 @@ def redirigirEditar(id_vendedor,request):
             argumentos = {"nombre": nombre, "tipo": tipo, "id": id, "avatar": avatar,
                           "listaDeProductos": listaDeProductos,
                           "activo": activo, "formasDePago": formasDePago, "favoritos": favoritos}
-        print("chao")
         return render(request, url, argumentos)
 
 
@@ -768,8 +689,6 @@ def editarProducto(request):
     if request.method == 'POST':
         if request.is_ajax():
             form = editarProductosForm(data=request.POST, files=request.FILES)
-            print(request.POST)
-            print(request.FILES)
             nombreOriginal = request.POST.get("nombreOriginal")
             nuevoNombre = request.POST.get('nombre')
             nuevoPrecio = (request.POST.get('precio'))
@@ -907,29 +826,14 @@ def editarUsuarioAdmin(request):
             email = request.GET.get('email')
             avatar = request.GET.get('avatar')
             userID = request.GET.get('userID')
-
-            if  (nombre!=None):
-                print ("nombre:"+nombre)
-            if (contraseña != None):
-                print ("contraseña:"+contraseña)
-            if (email != None):
-                print ("email:"+email)
-            if (avatar != None):
-                print ("avatar:"+avatar)
-            if (userID != None):
-                print("id:"+userID)
             if email != None:
                 Usuario.objects.filter(id=userID).update(email=email)
-                print("cambio Mail")
             if nombre != None:
                 Usuario.objects.filter(id=userID).update(nombre=nombre)
-                print("cambio Nombre")
             if contraseña != None:
                 Usuario.objects.filter(id=userID).update(contraseña=contraseña)
-                print("cambio contraseña")
             if avatar != None:
                 Usuario.objects.filter(id=userID).update(avatar=avatar)
-                print("cambio avatar")
 
             data = {"respuesta": userID}
             return JsonResponse(data)
@@ -952,22 +856,6 @@ def editarUsuario(request):
             userID = request.GET.get('userID')
 
             nuevaListaFormasDePago = ""
-            if(nombre!=None):
-                print ("nombre:"+nombre)
-            if (contraseña != None):
-                print ("contraseña:"+contraseña)
-            if (tipo != None):
-                print ("tipo:"+tipo)
-            if (email != None):
-                print ("email:"+email)
-            if (avatar != None):
-                print ("avatar:"+avatar)
-            if (horaIni != None):
-                print("horaIni:"+horaIni)
-            if (horaFin != None):
-                print("horaFin:" + horaFin)
-            if (userID != None):
-                print("id:"+userID)
             if (forma0 != None):
                 nuevaListaFormasDePago+="0"
             if (forma1 != None):
@@ -995,28 +883,19 @@ def editarUsuario(request):
             )
             if email != None:
                 Usuario.objects.filter(id=userID).update(email=email)
-                print("cambio Mail")
             if nombre != None:
                 Usuario.objects.filter(id=userID).update(nombre=nombre)
-                print("cambio Nombre")
             if contraseña != None:
                 Usuario.objects.filter(id=userID).update(contraseña=contraseña)
-                print("cambio contraseña")
             if tipo != None:
                 Usuario.objects.filter(id=userID).update(tipo=tipo)
-                print("cambio tipo")
             if avatar != None:
                 Usuario.objects.filter(id=userID).update(avatar=avatar)
-                print("cambio avatar")
             if horaIni != None:
                 Usuario.objects.filter(id=userID).update(horarioIni=horaIni)
-                print("cambio hora ini")
             if horaFin != None:
                 Usuario.objects.filter(id=userID).update(horarioFin=horaFin)
-                print("cambio hora fin")
             Usuario.objects.filter(id=userID).update(formasDePago=nuevaListaFormasDePago)
-            print("cambio formas de pago")
-
             data = {"respuesta" : userID}
             return JsonResponse(data)
 
@@ -1028,7 +907,6 @@ def registerAdmin(request):
     horaInicial = request.POST.get("horaIni")
     horaFinal = request.POST.get("horaFin")
     avatar = request.FILES.get("avatar")
-    #print(avatar)
     formasDePago = []
     if not (request.POST.get("formaDePago0") is None):
         formasDePago.append(request.POST.get("formaDePago0"))
@@ -1046,17 +924,12 @@ def registerAdmin(request):
     avatar = request.session['avatar']
     nombre = request.session['nombre']
     contraseña = request.session['contraseña']
-    print(id)
-    print(email)
-    print(avatar)
-    print(nombre)
     return adminPOST(id,avatar,email,nombre,contraseña,request)
 
 @csrf_exempt
 def verificarEmail(request):
     if request.is_ajax() or request.method == 'POST':
         email = request.POST.get("email")
-        print(email)
         if Usuario.objects.filter(email=email).exists():
             data = {"respuesta": "repetido"}
             return JsonResponse(data)
@@ -1081,8 +954,6 @@ def getStock(request):
     return JsonResponse({"stock": stock})
 
 def createTransaction(request):
-    print("GET:")
-    print(request.GET)
     nombreProducto = request.GET.get("nombre")
     precio=0
     idVendedor = request.GET.get("idUsuario")
@@ -1090,10 +961,8 @@ def createTransaction(request):
         precio = Comida.objects.filter(nombre=nombreProducto).values('precio')[0]
         listaAux=list(precio.values())
         precio=listaAux[0]
-        print(precio)
     else:
         return HttpResponse('error message')
-    print(nombreProducto)
     transaccionNueva = Transacciones(idVendedor=idVendedor,precio=precio,nombreComida=nombreProducto)
     transaccionNueva.save()
     return JsonResponse({"transaccion": "realizada"})
