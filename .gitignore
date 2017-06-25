@@ -141,3 +141,6 @@ compiled/
 
 # Bak files
 *.bak
+
+# SQLite
+db.sqlite3
