@@ -63,13 +63,6 @@ def index(request):
                 Usuario.objects.filter(nombre = p.nombre).update(activo=1)
             else:
                 Usuario.objects.filter(nombre=p.nombre).update(activo=0)
-
-
-
-
-
-
-
     vendedoresJson = simplejson.dumps(vendedores)
 
     return render(request, 'main/baseAlumno-sinLogin.html', {"vendedores": vendedoresJson})
@@ -401,7 +394,6 @@ def loginReq(request):
     #retornar en caso de datos invalidos
     else:
         return render(request, 'main/login.html', {"error" : "Usuario o contraseña invalidos"})
-
 
 
 def gestionproductos(request):
