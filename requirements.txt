@@ -1,4 +1,14 @@
+coverage==4.4.1
 Django==1.11.2
+django-multiselectfield==0.1.7
+django-nose==1.4.4
+mock==2.0.0
+nose==1.3.7
+olefile==0.44
+pbr==3.1.1
+Pillow==4.1.1
+pytz==2017.2
 simplejson==3.10.0
-django-multiselectfield
-Pillow
+six==1.10.0
+sure==1.4.6
+yapf==0.16.2
