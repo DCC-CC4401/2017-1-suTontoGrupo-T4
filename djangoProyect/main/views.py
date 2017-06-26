@@ -258,7 +258,6 @@ def loginReq(request):
                     avatar = p.avatar
                     activo = p.activo
                     formasDePago = p.formasDePago
-                    print(formasDePago)
                     request.session['formasDePago'] = formasDePago
                     request.session['activo'] = activo
                     break
@@ -334,11 +333,8 @@ def loginReq(request):
 def gestionproductos(request):
     if request.session.has_key('id'):
         email = request.session['email']
-        print(email)
         tipo = request.session['tipo']
-        print(tipo)
         id = request.session['id']
-        print(tipo)
         if tipo == 3:
             path = "main/baseVAmbulante.html"
         elif tipo == 2:
@@ -412,7 +408,6 @@ def productoReq(request):
             id = request.session['id']
             email = request.session['email']
             tipo = request.session['tipo']
-            print(request.session['tipo'])
             avatar = request.session['avatar']
             if tipo == 3:
                 path = "main/baseVAmbulante.html"
@@ -705,8 +700,6 @@ def cambiarFavorito(request):
             favorito = request.GET.get('favorito')
             agregar = request.GET.get('agregar')
             if agregar == "si":
-                print(request.session['id'])
-                print(favorito)
                 nuevoFavorito = Favoritos()
                 nuevoFavorito.idAlumno_id = request.session['id']
                 nuevoFavorito.idVendedor_id = favorito
