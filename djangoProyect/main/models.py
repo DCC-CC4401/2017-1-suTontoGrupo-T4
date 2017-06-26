@@ -128,6 +128,7 @@ class Comida(models.Model):
         listaDeProductos.append(self.precio)
         listaDeProductos.append(self.descripcion)
         listaDeProductos.append(str(self.imagen))
+        listaDeProductos.append(self.idComida)
         return listaDeProductos
 
 
