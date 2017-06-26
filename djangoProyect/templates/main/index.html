@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{#--{% extends 'main/base.html' %} --#}
 {% block content %}
 	<div id="map"></div>
 
@@ -65,12 +65,20 @@
             infoVendedor.open(map, marker3);
           });
 
+        var GeoMarker;
+
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             }
+
+            GeoMarker = new google.maps.Marker({
+              position: pos,
+              map: map
+            });
+
             map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
