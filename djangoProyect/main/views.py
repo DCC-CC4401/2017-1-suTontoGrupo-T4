@@ -742,11 +742,7 @@ def cambiarEstado(request):
             if estado == "true":
                 Usuario.objects.filter(info_id=id_vendedor).update(activo=True)
             else:
-<<<<<<< HEAD
                 Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
-=======
-                    Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
->>>>>>> ae76495ec981b9b943f1c3d74878ba95f48a713d
             data = {"estado": estado}
             return JsonResponse(data)
 
