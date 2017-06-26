@@ -307,7 +307,7 @@ def gestionproductos(request):
             path = "main/baseVAmbulante.html"
         if tipo == 2:
             path = "main/baseVFijo.html"
-    return render(request, 'main/agregar-productos.html', {"path": path})
+    return render(request, 'main/agregar-productos.html', {"path": path, "avatar": request.session['avatar']})
 
 
 def vendedorprofilepage(request):
@@ -376,6 +376,7 @@ def productoReq(request):
             id = request.session['id']
             email = request.session['email']
             tipo = request.session['tipo']
+            avatar = request.session['avatar']
             if tipo == 3:
                 path = "main/baseVAmbulante.html"
                 url = "main/vendedor-ambulante.html"
@@ -395,7 +396,7 @@ def productoReq(request):
                 producto.save()
             else:
                 return render(request, 'main/agregar-productos.html',
-                              {"path": path, "respuesta": "¡Ingrese todos los datos!"})
+                              {"path": path, "respuesta": "¡Ingrese todos los datos!", "avatar": avatar})
 
     # obtener alimentos en caso de que sea vendedor fijo o ambulante
     i = 0
