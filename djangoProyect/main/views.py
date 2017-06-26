@@ -27,12 +27,12 @@ from django.core.files.storage import default_storage
 def index(request):
     vendedores = []
     # lista de vendedores
-    for p in Usuario.objects.raw('SELECT * FROM usuario'):
+    for p in Usuario.objects.all():
         if p.tipo == 2 or p.tipo == 3:
             vendedores.append(p.id)
     vendedoresJson = simplejson.dumps(vendedores)
     # actualizar vendedores fijos
-    for p in Usuario.objects.raw('SELECT * FROM usuario'):
+    for p in Usuario.objects.all():
         p.actualizar()
     vendedoresJson = simplejson.dumps(vendedores)
 
@@ -203,7 +203,7 @@ def loginReq(request):
     MyLoginForm = LoginForm(request.POST)
     if MyLoginForm.is_valid():
         vendedores = []
-        for p in Usuario.objects.raw('SELECT * FROM usuario'):
+        for p in Usuario.objects.all():
             if p.contraseña == password and p.email == email:
                 tipo = p.tipo
                 nombre = p.nombre
@@ -262,7 +262,7 @@ def loginReq(request):
         request.session['nombre'] = nombre
         request.session['avatar'] = str(avatar)
         # si son vendedores, crear lista de productos
-        for p in Usuario.objects.raw('SELECT * FROM usuario'):
+        for p in Usuario.objects.all():
             if p.tipo == 2 or p.tipo == 3:
                 vendedores.append(p.id)
         vendedoresJson = simplejson.dumps(vendedores)
@@ -412,7 +412,7 @@ def productoReq(request):
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
 
-    for p in Usuario.objects.raw('SELECT * FROM usuario'):
+    for p in Usuario.objects.all():
         if p.id == id:
             avatar = p.avatar
             horarioIni = p.horarioIni
@@ -425,7 +425,7 @@ def productoReq(request):
 def vistaVendedorPorAlumno(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
-        for p in Usuario.objects.raw('SELECT * FROM usuario'):
+        for p in Usuario.objects.all():
             if p.id == id:
                 favorito = 0
                 for f in Favoritos.objects.raw('SELECT * FROM Favoritos'):
@@ -462,7 +462,7 @@ def vistaVendedorPorAlumno(request):
 def vistaVendedorPorAlumnoSinLogin(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
-        for p in Usuario.objects.raw('SELECT * FROM usuario'):
+        for p in Usuario.objects.all():
             if p.id == id:
                 tipo = p.tipo
                 nombre = p.nombre
@@ -533,7 +533,7 @@ def editarDatos(request):
         if (not (horaFinal is None)):
             usuario.update(horarioFin=horaFinal)
             # actualizar vendedores fijos
-        for p in Usuario.objects.raw('SELECT * FROM usuario'):
+        for p in Usuario.objects.all():
             p.actualizar()
 
     avatar = request.FILES.get("avatar")
@@ -609,7 +609,7 @@ def inicioAlumno(request):
     id = request.session['id']
     vendedores = []
     # si son vendedores, crear lista de productos
-    for p in Usuario.objects.raw('SELECT * FROM usuario'):
+    for p in Usuario.objects.all():
         if p.id == id:
             avatar = p.avatar
         if p.tipo == 2 or p.tipo == 3:
@@ -735,7 +735,7 @@ def procesarPerfilAlumno(request):
             Usuario.objects.filter(nombre=nombreOriginal).update(nombre=nuevoNombre)
 
         for i in aEliminar:
-            for fav in Favoritos.objects.raw("SELECT * FROM Favoritos"):
+            for fav in Favoritos.objects.all():
                 if request.session['id'] == fav.idAlumno:
                     if int(i) == fav.idVendedor:
                         Favoritos.objects.filter(idAlumno=request.session['id']).filter(idVendedor=int(i)).delete()
