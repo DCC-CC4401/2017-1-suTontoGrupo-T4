@@ -133,10 +133,14 @@ class Comida(models.Model):
 
 class Favoritos(models.Model):
     id = models.AutoField(primary_key=True)
-    idAlumno = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
-    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
+    idAlumno = models.OneToOneField(Usuario,
+                                    related_name="id_alumno",
+                                    on_delete=models.CASCADE,
+                                    primary_key=False, )
+    idVendedor = models.OneToOneField(Usuario,
+                                      related_name="id_vendedor",
+                                      on_delete=models.CASCADE,
+                                      primary_key=False, )
 
     def __str__(self):
         return str(self.idAlumno)
