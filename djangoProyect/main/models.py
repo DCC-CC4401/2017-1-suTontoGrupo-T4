@@ -1,29 +1,34 @@
 import datetime
+
+from django.contrib.auth.models import User
 from django.db import models
 from multiselectfield import MultiSelectField
 from django.utils import timezone
 from django.utils.formats import get_format
 
+
 # Create your models here
 
 class Usuario(models.Model):
-    id = models.AutoField(primary_key=True)
+    info = models.OneToOneField(User, on_delete=models.CASCADE,
+                                primary_key=True, )
+    #id = models.AutoField(primary_key=False)
     nombre = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     tipos = ((0, 'admin'), (1, 'alumno'), (2, 'fijo'), (3, 'ambulante'))
     tipo = models.IntegerField(choices=tipos)
-    avatar = models.ImageField(upload_to = 'avatars')
+    avatar = models.ImageField(upload_to='avatars')
     contraseña = models.CharField(max_length=200)
-    activo = models.BooleanField(default=False,blank=True)
+    activo = models.BooleanField(default=False, blank=True)
     litaFormasDePago = (
         (0, 'Efectivo'),
         (1, 'Tarjeta de Crédito'),
         (2, 'Tarjeta de Débito'),
         (3, 'Tarjeta Junaeb'),
     )
-    formasDePago = MultiSelectField(choices=litaFormasDePago,null=True,blank=True)
-    horarioIni = models.CharField(max_length=200,blank=True,null=True)
-    horarioFin = models.CharField(max_length=200,blank=True,null=True)
+    formasDePago = MultiSelectField(choices=litaFormasDePago, null=True, blank=True)
+    horarioIni = models.CharField(max_length=200, blank=True, null=True)
+    horarioFin = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -66,11 +71,9 @@ class Usuario(models.Model):
                 Usuario.objects.filter(nombre=self.nombre).update(activo=0)
 
 
-
-
 class Comida(models.Model):
     idVendedor = models.IntegerField(default=0);
-    nombre = models.CharField(max_length=200,primary_key=True)
+    nombre = models.CharField(max_length=200, primary_key=True)
     listaCategorias = (
         (0, 'Cerdo'),
         (1, 'Chino'),
@@ -103,7 +106,7 @@ class Comida(models.Model):
         db_table = 'Comida'
 
     def info(self):
-        listaDeProductos=[]
+        listaDeProductos = []
         listaDeProductos.append(self.nombre)
         categoria = str(self.categorias)
         listaDeProductos.append(categoria)
@@ -112,6 +115,7 @@ class Comida(models.Model):
         listaDeProductos.append(self.descripcion)
         listaDeProductos.append(str(self.imagen))
         return listaDeProductos
+
 
 class Favoritos(models.Model):
     id = models.AutoField(primary_key=True)
@@ -135,14 +139,15 @@ class Imagen(models.Model):
     class Meta:
         db_table = 'imagen'
 
+
 class Transacciones(models.Model):
     my_formats = get_format('DATETIME_INPUT_FORMATS')
     idTransaccion = models.AutoField(primary_key=True)
-    nombreComida = models.CharField(max_length=200,blank=True,null=True)
+    nombreComida = models.CharField(max_length=200, blank=True, null=True)
     idVendedor = models.IntegerField()
     precio = models.IntegerField()
     fechaAhora = str(timezone.now()).split(' ', 1)[0]
-    fecha = models.CharField(max_length=200,default=fechaAhora)
+    fecha = models.CharField(max_length=200, default=fechaAhora)
 
     def __str__(self):
         return str(self.idTransaccion)
