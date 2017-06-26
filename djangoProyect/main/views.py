@@ -1,4 +1,6 @@
 import datetime
+
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.utils import timezone
@@ -182,7 +184,7 @@ def loginReq(request):
     email = request.POST.get("email")
     avatar = ''
     contraseña = ''
-    password = request.POST.get("password")
+    clave = request.POST.get("password")
     listaDeProductos = []
     formasDePago = []
     activo = False
@@ -192,7 +194,7 @@ def loginReq(request):
     if MyLoginForm.is_valid():
         vendedores = []
         for p in Usuario.objects.all():
-            if p.info.password == password and p.email == email:
+            if p.info.check_password(clave) and p.info.email == email:
                 tipo = p.tipo
                 nombre = p.nombre
                 if (tipo == 0):
@@ -355,7 +357,11 @@ def register(request):
         formasDePago.append(request.POST.get("formaDePago2"))
     if not (request.POST.get("formaDePago3") is None):
         formasDePago.append(request.POST.get("formaDePago3"))
-    usuarioNuevo = Usuario(nombre=nombre, email=email, tipo=tipo, contraseña=password, avatar=avatar,
+    userNuevo= User(email=email, username=email)
+    userNuevo.save()
+    userNuevo.set_password(password)
+    userNuevo.save()
+    usuarioNuevo = Usuario(info= userNuevo, nombre=nombre, tipo=tipo, avatar=avatar,
                            formasDePago=formasDePago, horarioIni=horaInicial, horarioFin=horaFinal)
     usuarioNuevo.save()
     return loginReq(request)
