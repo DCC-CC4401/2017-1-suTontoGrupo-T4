@@ -85,7 +85,8 @@ class Usuario(models.Model):
 
 
 class Comida(models.Model):
-    idVendedor = models.IntegerField(default=0);
+    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
+                                primary_key=True, )
     nombre = models.CharField(max_length=200, primary_key=True)
     listaCategorias = (
         (0, 'Cerdo'),
@@ -132,8 +133,10 @@ class Comida(models.Model):
 
 class Favoritos(models.Model):
     id = models.AutoField(primary_key=True)
-    idAlumno = models.IntegerField()
-    idVendedor = models.IntegerField()
+    idAlumno = models.OneToOneField(User, on_delete=models.CASCADE,
+                                primary_key=True, )
+    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
+                                primary_key=True, )
 
     def __str__(self):
         return str(self.idAlumno)
@@ -157,7 +160,8 @@ class Transacciones(models.Model):
     my_formats = get_format('DATETIME_INPUT_FORMATS')
     idTransaccion = models.AutoField(primary_key=True)
     nombreComida = models.CharField(max_length=200, blank=True, null=True)
-    idVendedor = models.IntegerField()
+    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
+                                primary_key=True, )
     precio = models.IntegerField()
     fechaAhora = str(timezone.now()).split(' ', 1)[0]
     fecha = models.CharField(max_length=200, default=fechaAhora)
