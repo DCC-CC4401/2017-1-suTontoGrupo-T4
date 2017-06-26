@@ -49,10 +49,20 @@ def volverVFijo(request):
 
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
+    pagos = ""
+    for p in request.session['formasDePago']:
+        if  p == '0':
+            pagos = pagos + "Efectivo, "
+        elif p == '1':
+            pagos = pagos + "Tarjeta de Crédito, "
+        elif p == '2':
+            pagos = pagos + "Tarjeta de Débito, "
+        elif p == '3':
+            pagos = pagos + "Tarjeta Junaeb"
     argumentos = {"nombre": request.session['nombre'], "tipo": request.session['tipo'], "id": request.session['id'],
                   "horarioIni": request.session['horarioIni'],
                   "favoritos": obtenerFavoritos(request.session['id']), "horarioFin": request.session['horarioFin'], "avatar": request.session['avatar'],
-                  "listaDeProductos": listaDeProductos, "formasDePago": request.session['formasDePago'],
+                  "listaDeProductos": listaDeProductos, "formasDePago": pagos,
                   "activo": request.session['activo']}
     return render(request, 'main/vendedor-fijo.html', argumentos)
 
@@ -65,10 +75,20 @@ def volverVAmbulante(request):
 
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
+    pagos = ""
+    for p in request.session['formasDePago']:
+        if  p == '0':
+            pagos = pagos + "Efectivo, "
+        elif p == '1':
+            pagos = pagos + "Tarjeta de Crédito, "
+        elif p == '2':
+            pagos = pagos + "Tarjeta de Débito, "
+        elif p == '3':
+            pagos = pagos + "Tarjeta Junaeb"
     argumentos = {"nombre": request.session['nombre'], "tipo": request.session['tipo'], "id": request.session['id'],
                   "avatar": request.session['avatar'], "favoritos": obtenerFavoritos(request.session['id']),
                   "listaDeProductos": listaDeProductos, "activo": request.session['activo'],
-                  "formasDePago": request.session['formasDePago']}
+                  "formasDePago": pagos}
     return render(request, 'main/vendedor-ambulante.html', argumentos)
 
 
