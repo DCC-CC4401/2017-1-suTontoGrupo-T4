@@ -705,9 +705,11 @@ def cambiarFavorito(request):
             favorito = request.GET.get('favorito')
             agregar = request.GET.get('agregar')
             if agregar == "si":
+                print(request.session['id'])
+                print(favorito)
                 nuevoFavorito = Favoritos()
-                nuevoFavorito.idAlumno = request.session['id']
-                nuevoFavorito.idVendedor = favorito
+                nuevoFavorito.idAlumno_id = request.session['id']
+                nuevoFavorito.idVendedor_id = favorito
                 nuevoFavorito.save()
                 respuesta = {"respuesta": "si"}
             else:
