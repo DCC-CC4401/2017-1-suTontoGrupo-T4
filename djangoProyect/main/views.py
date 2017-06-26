@@ -302,11 +302,14 @@ def loginReq(request):
 def gestionproductos(request):
     if request.session.has_key('id'):
         email = request.session['email']
+        print(email)
         tipo = request.session['tipo']
+        print(tipo)
         id = request.session['id']
+        print(tipo)
         if tipo == 3:
             path = "main/baseVAmbulante.html"
-        if tipo == 2:
+        elif tipo == 2:
             path = "main/baseVFijo.html"
     return render(request, 'main/agregar-productos.html', {"path": path, "avatar": request.session['avatar']})
 
@@ -358,11 +361,11 @@ def register(request):
         formasDePago.append(request.POST.get("formaDePago2"))
     if not (request.POST.get("formaDePago3") is None):
         formasDePago.append(request.POST.get("formaDePago3"))
-    userNuevo= User(email=email, username=email)
+    userNuevo = User(email=email, username=email)
     userNuevo.save()
     userNuevo.set_password(password)
     userNuevo.save()
-    usuarioNuevo = Usuario(info= userNuevo, nombre=nombre, tipo=tipo, avatar=avatar,
+    usuarioNuevo = Usuario(info=userNuevo, nombre=nombre, tipo=tipo, avatar=avatar,
                            formasDePago=formasDePago, horarioIni=horaInicial, horarioFin=horaFinal)
     usuarioNuevo.save()
     return loginReq(request)
@@ -377,6 +380,7 @@ def productoReq(request):
             id = request.session['id']
             email = request.session['email']
             tipo = request.session['tipo']
+            print(request.session['tipo'])
             avatar = request.session['avatar']
             if tipo == 3:
                 path = "main/baseVAmbulante.html"
@@ -556,7 +560,7 @@ def editarDatos(request):
 
 
 def redirigirEditar(id_vendedor, request):
-    for usr in Usuario.objects.filter(info_id=str(id_vendedor)):
+    for usr in Usuario.objects.filter(info_id=id_vendedor):
         id = usr.info.id
         nombre = usr.nombre
         email = usr.email
