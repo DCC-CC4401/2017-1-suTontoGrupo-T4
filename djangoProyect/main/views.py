@@ -40,11 +40,36 @@ def index(request):
 
     return render(request, 'main/baseAlumno-sinLogin.html', {"vendedores": vendedoresJson})
 
+
 def volverVFijo(request):
-    return render(request, 'main/vendedor-fijo.html', {"avatar": request.session['avatar']})
+    i = 0
+    listaDeProductos = []
+    for producto in Comida.objects.filter(idVendedor=User.objects.get(id=request.session['id'])):
+        listaDeProductos.append(producto.info())
+
+        i += 1
+    listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
+    argumentos = {"nombre": request.session['nombre'], "tipo": request.session['tipo'], "id": request.session['id'],
+                  "horarioIni": request.session['horarioIni'],
+                  "favoritos": obtenerFavoritos(request.session['id']), "horarioFin": request.session['horarioFin'], "avatar": request.session['avatar'],
+                  "listaDeProductos": listaDeProductos, "formasDePago": request.session['formasDePago'],
+                  "activo": request.session['activo']}
+    return render(request, 'main/vendedor-fijo.html', argumentos)
+
 
 def volverVAmbulante(request):
-    return render(request, 'main/vendedor-ambulante.html', {"avatar": request.session['avatar']})
+    i = 0
+    listaDeProductos = []
+    for producto in Comida.objects.filter(idVendedor=request.session['id']):
+        listaDeProductos.append(producto.info())
+
+        i += 1
+    listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
+    argumentos = {"nombre": request.session['nombre'], "tipo": request.session['tipo'], "id": request.session['id'],
+                  "avatar": request.session['avatar'], "favoritos": obtenerFavoritos(request.session['id']),
+                  "listaDeProductos": listaDeProductos, "activo": request.session['activo'],
+                  "formasDePago": request.session['formasDePago']}
+    return render(request, 'main/vendedor-ambulante.html', argumentos)
 
 
 def login(request):
@@ -569,7 +594,7 @@ def redirigirEditar(id_vendedor, request):
     for usr in Usuario.objects.filter(info_id=id_vendedor):
         id = usr.info.id
         nombre = usr.nombre
-        email = usr.email
+        email = usr.info.username
         tipo = usr.tipo
         avatar = usr.avatar
         activo = usr.activo
