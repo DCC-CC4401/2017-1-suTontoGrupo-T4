@@ -258,6 +258,7 @@ def loginReq(request):
                     avatar = p.avatar
                     activo = p.activo
                     formasDePago = p.formasDePago
+                    print(formasDePago)
                     request.session['formasDePago'] = formasDePago
                     request.session['activo'] = activo
                     break
