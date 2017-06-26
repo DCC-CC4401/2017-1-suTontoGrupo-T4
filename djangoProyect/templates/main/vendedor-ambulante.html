@@ -377,11 +377,10 @@
 <script>
 
     function subirStock(id){
-         var datos ="op=suma&nombre=" + id;
          $.ajax({
            url:{% url 'getStock' %},
            type: "GET",
-           data: datos,
+           data: {"op": "suma","nombre": id},
            dataType: "json",
            success: function(data) {
                var nuevoStock = parseInt(data.stock);
@@ -397,7 +396,7 @@
 
     function bajarStock(id){
         //crea la transaccion en la bdd
-         var datosTransaccion="nombre=" + id + "&" + "idUsuario=" + "{{id}}";
+         /*var datosTransaccion="nombre=" + id + "&" + "idUsuario=" + "{{id}}";
         $.ajax({
            url:{% url 'createTransaction' %},
            type: "GET",
@@ -409,16 +408,15 @@
            error:function(data) {
                alert("error in getting from server");
            },
-         });
+         });*/
 
 
 
         //restar en la bdd
-        var datos ="op=resta&nombre=" + id;
          $.ajax({
            url:{% url 'getStock' %},
            type: "GET",
-           data: datos,
+           data: {"op": "resta", "nombre": id},
            dataType: "json",
            success: function(data) {
                //alert("tambien funciono");
