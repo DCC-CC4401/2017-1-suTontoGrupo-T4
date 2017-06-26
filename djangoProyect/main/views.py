@@ -154,7 +154,7 @@ def adminPOST(id, avatar, email, nombre, contraseña, request):
     numeroDeComidas = Comida.objects.count()
     for usr in Usuario.objects.raw('SELECT * FROM usuario WHERE tipo != 0'):
         datosUsuarios.append([])
-        datosUsuarios[i].append(usr.id)
+        datosUsuarios[i].append(usr.info.id)
         datosUsuarios[i].append(usr.nombre)
         datosUsuarios[i].append(usr.email)
         datosUsuarios[i].append(usr.tipo)
@@ -561,7 +561,7 @@ def editarDatos(request):
 
 def redirigirEditar(id_vendedor, request):
     for usr in Usuario.objects.filter(id=str(id_vendedor)):
-        id = usr.id
+        id = usr.info.id
         nombre = usr.nombre
         email = usr.email
         tipo = usr.tipo
