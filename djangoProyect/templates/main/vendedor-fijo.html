@@ -193,29 +193,29 @@
                                             document.write("</div>");
                                             //editar nombre
                                             document.write("<div class='row'>");
-                                            document.write("<div class='input-field col s12 m12' >Editar nombre");
+                                            document.write("<div class='input-field col s12 m12' >Editar nombre:");
                                             document.write("<div class='input-field inline '>");
-                                            document.write("<input placeholder='" + productos[i][0] + "' class='validate' type='text' name='nombre' id='nombre' />");
-                                            document.write("<label style='text-align: center' for='item'></label></div></div>");
+                                            document.write("<input value='" + productos[i][0] + "' class='validate' type='text' name='nombre' id='nombre' />");
+                                            document.write("<label style='text-align: center' for='nombre'></label></div></div>");
                                             document.write("</div>");
                                             //editar precio
                                             document.write("<div class='row'>");
-                                            document.write("<div class='input-field col s12 m12' >Editar precio");
+                                            document.write("<div class='input-field col s12 m12' >Editar precio:");
                                             document.write("<div class='input-field inline '>");
-                                            document.write("<input placeholder='" + productos[i][3] + "' class='validate' type='text' name='precio' id='precio' />");
+                                            document.write("<input value='" + productos[i][3] + "' class='validate' type='text' name='precio' id='precio' />");
                                             document.write("<label style='text-align: center' for='precio'></label></div></div>");
                                             document.write("</div>");
                                             //editar stock
                                             document.write("<div class='row'>");
-                                            document.write("<div class='input-field col s12 m12' >Editar stock");
+                                            document.write("<div class='input-field col s12 m12' >Editar stock:");
                                             document.write("<div class='input-field inline '>");
-                                            document.write("<input placeholder='" + productos[i][2] + "' class='validate' type='text' name='stock' id='stock' />");
+                                            document.write("<input value='" + productos[i][2] + "' class='validate' type='text' name='stock' id='stock' />");
                                             document.write("<label style='text-align: center' for='precio'></label></div></div>");
                                             document.write("</div>");
                                             //editar descripcion
                                             document.write("<div class='row'>");
-                                            document.write("<div class='input-field col s12 m12' >Editar descripcion");
-                                            document.write("<input placeholder='" + productos[i][2] + "'  class='validate' type='text' name='descripcion' id='descripcion'  />");
+                                            document.write("<div class='input-field col s12 m12' >Editar descripcion:");
+                                            document.write("<input value='" + productos[i][4] + "'  class='validate' type='text' name='descripcion' id='descripcion'  />");
                                             document.write("<label  for='icon_prefix2'></label></div>");
                                             document.write("</div>");
                                             //editar categoria
@@ -388,11 +388,10 @@
     <script>
 
         function subirStock(id) {
-            var datos = "op=suma&nombre=" + id;
             $.ajax({
                 url:{% url 'getStock' %},
                 type: "GET",
-                data: datos,
+                data: {"op": "suma", "nombre": id},
                 dataType: "json",
                 success: function (data) {
                     var nuevoStock = parseInt(data.stock);
@@ -408,7 +407,7 @@
 
         function bajarStock(id) {
             //crea la transaccion en la bdd
-            var datosTransaccion = "nombre=" + id + "&" + "idUsuario=" + "{{id}}";
+           /* var datosTransaccion = "nombre=" + id + "&" + "idUsuario=" + "{{id}}";
             $.ajax({
                 url:{% url 'createTransaction' %},
                 type: "GET",
@@ -420,13 +419,12 @@
                 error: function (data) {
                     alert("error in getting from server");
                 },
-            });
+            }); */
 
-            var datos = "op=resta&nombre=" + id;
             $.ajax({
                 url:{% url 'getStock' %},
                 type: "GET",
-                data: datos,
+                data: {"op": "resta", "nombre": id},
                 dataType: "json",
                 success: function (data) {
                     //alert("tambien funciono")
@@ -435,7 +433,7 @@
                         nuevoStock -= 1;
                     }
                     document.getElementById("Stock-" + id).innerHTML = "Stock: " + nuevoStock;
-                    document.getElementById("Button--" + id).setAttribute("onclick", 'bajarStock(' + "\'" + id + "\'" + ' );');
+                    document.getElementById("Button--" + id).setAttribute("onclick", 'bajarStock(' + "\'"    + id + "\'" + ' );');
                 },
                 error: function (data) {
                     alert("error in getting from server");
