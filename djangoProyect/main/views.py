@@ -153,21 +153,9 @@ def adminPOST(id, avatar, email, nombre, contraseña, request):
     numeroUsuarios = Usuario.objects.count()
     numeroDeComidas = Comida.objects.count()
     for usr in Usuario.objects.raw('SELECT * FROM usuario WHERE tipo != 0'):
-        datosUsuarios.append([])
-        datosUsuarios[i].append(usr.info.id)
-        datosUsuarios[i].append(usr.nombre)
-        datosUsuarios[i].append(usr.email)
-        datosUsuarios[i].append(usr.tipo)
-        datosUsuarios[i].append(str(usr.avatar))
-        datosUsuarios[i].append(usr.activo)
-        datosUsuarios[i].append(usr.formasDePago)
-        datosUsuarios[i].append(usr.horarioIni)
-        datosUsuarios[i].append(usr.horarioFin)
-        datosUsuarios[i].append(usr.contraseña)
-
+        datosUsuarios.append(usr.informaciones())
         i += 1
     listaDeUsuarios = simplejson.dumps(datosUsuarios, ensure_ascii=False).encode('utf8')
-    hola = "hola"
 
     # limpiar argumentos de salida segun tipo de vista
     argumentos = {"nombre": nombre, "id": id, "avatar": avatar, "email": email, "lista": listaDeUsuarios,

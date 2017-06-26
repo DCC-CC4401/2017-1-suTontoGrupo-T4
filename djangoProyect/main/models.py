@@ -69,6 +69,19 @@ class Usuario(models.Model):
                 Usuario.objects.filter(nombre=self.nombre).update(activo=1)
             else:
                 Usuario.objects.filter(nombre=self.nombre).update(activo=0)
+    def informaciones(self):
+        datosUsuarios=[]
+        datosUsuarios.append(self.info.id)
+        datosUsuarios.append(self.nombre)
+        datosUsuarios.append(self.email)
+        datosUsuarios.append(self.tipo)
+        datosUsuarios.append(str(self.avatar))
+        datosUsuarios.append(self.activo)
+        datosUsuarios.append(self.formasDePago)
+        datosUsuarios.append(self.horarioIni)
+        datosUsuarios.append(self.horarioFin)
+        datosUsuarios.append(self.contraseña)
+        return datosUsuarios
 
 
 class Comida(models.Model):
