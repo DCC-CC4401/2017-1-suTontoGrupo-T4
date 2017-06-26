@@ -132,11 +132,14 @@ class Comida(models.Model):
 
 
 class Favoritos(models.Model):
-    idAlumno = models.ForeignKey(Usuario,
+
+    id = models.AutoField(primary_key=True)
+    idAlumno = models.OneToOneField(Usuario,
                                     related_name="id_alumno",
                                     on_delete=models.CASCADE,
                                     primary_key=False, )
-    idVendedor = models.ForeignKey(Usuario,
+    idVendedor = models.OneToOneField(Usuario,
+
                                       related_name="id_vendedor",
                                       on_delete=models.CASCADE,
                                       primary_key=False, )
