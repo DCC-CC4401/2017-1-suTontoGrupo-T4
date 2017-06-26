@@ -40,6 +40,12 @@ def index(request):
 
     return render(request, 'main/baseAlumno-sinLogin.html', {"vendedores": vendedoresJson})
 
+def volverVFijo(request):
+    return render(request, 'main/vendedor-fijo.html', {"avatar": request.sessions['avatar']})
+
+def volverVAmbulante(request):
+    return render(request, 'main/vendedor-ambulante.html', {"avatar": request.sessions['avatar']})
+
 
 def login(request):
     return render(request, 'main/login.html', {})
