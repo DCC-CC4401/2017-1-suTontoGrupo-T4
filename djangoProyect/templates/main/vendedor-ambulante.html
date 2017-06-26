@@ -172,7 +172,7 @@
                                                 document.write("<form enctype='multipart/form-data' id='form"+i+"' class='col s12 m12' method='post' action='#' > {% csrf_token %}");
                                                 //guardar nombre original para busqueda en bdd
                                                 document.write("<div class='row'>");
-                                                document.write("<input type ='hidden' name = 'nombreOriginal' id='nombreOriginal' value = '" +productos[i][0] + "'>");
+                                                document.write("<input type ='hidden' name = 'nombreOriginal' id='nombreOriginal' value = '" +productos[i][6] + "'>");
                                                 document.write("</div>");
                                                 //editar nombre
                                                 document.write("<div class='row'>");
@@ -359,10 +359,6 @@
                    alert("Nombre ya existe en la base de datos");
               }
               else{
-
-
-
-
                    location.reload();
               }
            },

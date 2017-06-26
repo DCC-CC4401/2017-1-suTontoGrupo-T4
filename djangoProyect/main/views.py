@@ -51,7 +51,7 @@ def volverVFijo(request):
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
     pagos = ""
     for p in request.session['formasDePago']:
-        if  p == '0':
+        if p == '0':
             pagos = pagos + "Efectivo, "
         elif p == '1':
             pagos = pagos + "Tarjeta de Crédito, "
@@ -61,7 +61,8 @@ def volverVFijo(request):
             pagos = pagos + "Tarjeta Junaeb"
     argumentos = {"nombre": request.session['nombre'], "tipo": request.session['tipo'], "id": request.session['id'],
                   "horarioIni": request.session['horarioIni'],
-                  "favoritos": obtenerFavoritos(request.session['id']), "horarioFin": request.session['horarioFin'], "avatar": request.session['avatar'],
+                  "favoritos": obtenerFavoritos(request.session['id']), "horarioFin": request.session['horarioFin'],
+                  "avatar": request.session['avatar'],
                   "listaDeProductos": listaDeProductos, "formasDePago": pagos,
                   "activo": request.session['activo']}
     return render(request, 'main/vendedor-fijo.html', argumentos)
@@ -77,7 +78,7 @@ def volverVAmbulante(request):
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
     pagos = ""
     for p in request.session['formasDePago']:
-        if  p == '0':
+        if p == '0':
             pagos = pagos + "Efectivo, "
         elif p == '1':
             pagos = pagos + "Tarjeta de Crédito, "
@@ -689,13 +690,13 @@ def editarProducto(request):
             nuevaCategoria = (request.POST.get('categoria'))
             nuevaImagen = request.FILES.get("comida")
             if nuevoPrecio != "":
-                Comida.objects.filter(nombre=nombreOriginal).update(precio=int(nuevoPrecio))
+                Comida.objects.filter(idComida=nombreOriginal).update(precio=int(nuevoPrecio))
             if nuevoStock != "":
-                Comida.objects.filter(nombre=nombreOriginal).update(stock=int(nuevoStock))
+                Comida.objects.filter(idComida=nombreOriginal).update(stock=int(nuevoStock))
             if nuevaDescripcion != "":
-                Comida.objects.filter(nombre=nombreOriginal).update(descripcion=nuevaDescripcion)
+                Comida.objects.filter(idComida=nombreOriginal).update(descripcion=nuevaDescripcion)
             if nuevaCategoria != None:
-                Comida.objects.filter(nombre=nombreOriginal).update(categorias=(nuevaCategoria))
+                Comida.objects.filter(idComida=nombreOriginal).update(categorias=(nuevaCategoria))
             if nuevaImagen != None:
                 filename = nombreOriginal + ".jpg"
                 with default_storage.open('../media/productos/' + filename, 'wb+') as destination:
@@ -704,11 +705,11 @@ def editarProducto(request):
                 Comida.objects.filter(nombre=nombreOriginal).update(imagen='/productos/' + filename)
 
             if nuevoNombre != "":
-                if Comida.objects.filter(nombre=nuevoNombre).exists() and nuevoNombre != nombreOriginal:
-                    data = {"respuesta": "repetido"}
-                    return JsonResponse(data)
-                else:
-                    Comida.objects.filter(nombre=nombreOriginal).update(nombre=nuevoNombre)
+                # if Comida.objects.filter(nombre=nuevoNombre).exists() and nuevoNombre != nombreOriginal:
+                #   data = {"respuesta": "repetido"}
+                #  return JsonResponse(data)
+                # else:
+                Comida.objects.filter(idComida=nombreOriginal).update(nombre=nuevoNombre)
 
             data = {"respuesta": nombreOriginal}
             return JsonResponse(data)
@@ -730,7 +731,8 @@ def cambiarFavorito(request):
                 respuesta = {"respuesta": "no"}
             return JsonResponse(respuesta)
 
-            # return render_to_response('main/baseAdmin.html', {'form':form,'test':test}, context_instance=RequestContext(request))
+
+# return render_to_response('main/baseAdmin.html', {'form':form,'test':test}, context_instance=RequestContext(request))
 
 def cambiarEstado(request):
     if request.method == 'GET':
@@ -740,7 +742,11 @@ def cambiarEstado(request):
             if estado == "true":
                 Usuario.objects.filter(info_id=id_vendedor).update(activo=True)
             else:
+<<<<<<< HEAD
                 Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
+=======
+                    Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
+>>>>>>> ae76495ec981b9b943f1c3d74878ba95f48a713d
             data = {"estado": estado}
             return JsonResponse(data)
 
