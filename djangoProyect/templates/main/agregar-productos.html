@@ -1,109 +1,136 @@
 {% extends path %}
 {% block content %}
 
-<main>
-<div class="section"></div>
+    <main>
+        <div class="section"></div>
 
-      <h4 class="teal-text" style="text-align: center;">Agregar Item</h4>
-      <div class="section"></div>
+        <h4 class="teal-text" style="text-align: center;">Agregar Item</h4>
+        <div class="section"></div>
 
-      <div class="container">
-        <div class="z-depth-1 grey lighten-4 row" style="margin-left: 5%; margin-right: 5%; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+        <div class="container">
+            <div class="z-depth-1 grey lighten-4 row"
+                 style="margin-left: 5%; margin-right: 5%; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-          <form enctype="multipart/form-data" class="col s12 m12" method="post" action="{% url 'productoReq' %}" > {% csrf_token %}
-            <div class='row'>
-              <div class='col s12 m12'>
-              </div>
-            </div>
-
-            <div class='row'>
-               <h4>{{respuesta}}</h4>
-              <div class='input-field col s12 m12' >
-                  &ensp;Nombre del producto:
-                 <div class="input-field inline ">
-                <input placeholder="Pizza" class='validate' type='text' name='nombre' id='nombre' />
-                <label style="text-align: center" for='item'></label>
-                 </div>
-              </div>
-            </div>
-
-            <div class='row'>
-              <div class='input-field col s12 m12'>
-                  &ensp;Precio del producto:
-                  <div class="input-field inline">
-                <input placeholder="1300" class='validate' type='text' name='precio' id='precio' />
-                <label style="text-align: center" for='precio'></label>
-                  </div>
-              </div>
-            </div>
-            <div class='row'>
-              <div class='input-field col s12 m12'>
-                  &ensp;Stock del producto:
-                  <div class="input-field inline">
-                <input placeholder="42" class='validate' type='text' name='stock' id='stock' />
-                <label style="text-align: center" for='stock'></label>
-                  </div>
-              </div>
-            </div>
-            <div class="row">
-                  <div class="row">
-                    <div class="input-field col s12 m12" >
-                      <i class="material-icons prefix">&emsp;mode_edit</i>
-                      <input class='validate' type='text' name='descripcion' id='descripcion' />
-                      <label  for="icon_prefix2">&emsp;Descripción</label>
+                <form enctype="multipart/form-data" class="col s12 m12" method="post"
+                      action="{% url 'productoReq' %}"> {% csrf_token %}
+                    <div class='row'>
+                        <div class='col s12 m12'>
+                        </div>
                     </div>
-                  </div>
-            </div>
 
-            <div id="file-upload" class="section">
-             <!--Default version-->
-            <div class="row section">
-              <div class="col s8 m4 l3">
-                  <p>&emsp;&emsp;Imagen del</p>
-                  <p>&emsp;&emsp;&ensp;producto:</p>
-              </div>
-              <div class="col s8 m8 l9">
-                  <div class="dropify-wrapper touch-fallback">
-                      <div class="dropify-message">
-                          <div class="row hide-on-med-and-down">
-                              <div class="col s9 m7 l7">
-                                  <i class="material-icons center-align">mdi_file_cloud_upload</i>
-                              </div>
-                          </div>
-                          <div class="row show-on-medium-and-down hide-on-med-and-up">
-                              <div class="col s6">
-                                  <i class="material-icons tiny show-on-medium-and-down center-align">mdi_file_cloud_upload</i>
-                              </div>
-                          </div>
-                          <p>Arrastre y suelte un archivo aquí o haga click</p>
-                          <p class="dropify-error">Sorry, this file is too large</p>
-                      </div>
-                  <input id="comida" type="file" class="" name="comida" required>
-                      <button type="button" class="dropify-clear">Remove</button>
-                      <div class="dropify-preview"><span class="dropify-render"></span>
-                          <div class="dropify-infos">
-                              <div class="dropify-infos-inner">
-                                  <p class="dropify-filename">
+                    <div class='row'>
+                        <h4>{{ respuesta }}</h4>
+                        <div class='input-field col s12 m12'>
+                            &ensp;Nombre del producto:
+                            <div class="input-field inline ">
+                                <input placeholder="Pizza" class='validate' type='text' name='nombre' id='nombre'/>
+                                <label style="text-align: center" for='item'></label>
+                            </div>
+                        </div>
+                    </div>
 
-                                      <!--<span class="file-icon"></span>-->
-                                      <span class="dropify-filename-inner"></span></p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                    <div class='row'>
+                        <div class='input-field col s12 m12'>
+                            &ensp;Precio del producto:
+                            <div class="input-field inline">
+                                <input placeholder="1300" class='validate' type='text' name='precio' id='precio'/>
+                                <label style="text-align: center" for='precio'></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-field col s12 m12">
+                            <select name="categoria" id="categoria" required>
+                                <option value="" disabled selected>Elige una categoria</option>
+                                <option value="0">Cerdo</option>
+                                <option value="1">Chino</option>
+                                <option value="2">Completo</option>
+                                <option value="3">Egipcio</option>
+                                <option value="4">Empanada</option>
+                                <option value="5">Ensalada</option>
+                                <option value="6">Japones</option>
+                                <option value="7">Pan</option>
+                                <option value="8">Papas Fritas</option>
+                                <option value="9">Pasta</option>
+                                <option value="10">Pscado</option>
+                                <option value="11">Pollo</option>
+                                <option value="12">Postre</option>
+                                <option value="13">Sushi</option>
+                                <option value="14">Vacuno</option>
+                                <option value="15">Vegano</option>
+                                <option value="16">Vegetariano</option>
+                            </select>
+                            <label>Cateoria</label>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='input-field col s12 m12'>
+                            &ensp;Stock del producto:
+                            <div class="input-field inline">
+                                <input placeholder="42" class='validate' type='text' name='stock' id='stock'/>
+                                <label style="text-align: center" for='stock'></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12 m12">
+                                <i class="material-icons prefix">&emsp;mode_edit</i>
+                                <input class='validate' type='text' name='descripcion' id='descripcion'/>
+                                <label for="icon_prefix2">&emsp;Descripción</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="file-upload" class="section">
+                        <!--Default version-->
+                        <div class="row section">
+                            <div class="col s8 m4 l3">
+                                <p>&emsp;&emsp;Imagen del</p>
+                                <p>&emsp;&emsp;&ensp;producto:</p>
+                            </div>
+                            <div class="col s8 m8 l9">
+                                <div class="dropify-wrapper touch-fallback">
+                                    <div class="dropify-message">
+                                        <div class="row hide-on-med-and-down">
+                                            <div class="col s9 m7 l7">
+                                                <i class="material-icons center-align">mdi_file_cloud_upload</i>
+                                            </div>
+                                        </div>
+                                        <div class="row show-on-medium-and-down hide-on-med-and-up">
+                                            <div class="col s6">
+                                                <i class="material-icons tiny show-on-medium-and-down center-align">mdi_file_cloud_upload</i>
+                                            </div>
+                                        </div>
+                                        <p>Arrastre y suelte un archivo aquí o haga click</p>
+                                        <p class="dropify-error">Sorry, this file is too large</p>
+                                    </div>
+                                    <input id="comida" type="file" class="" name="comida" required>
+                                    <button type="button" class="dropify-clear">Remove</button>
+                                    <div class="dropify-preview"><span class="dropify-render"></span>
+                                        <div class="dropify-infos">
+                                            <div class="dropify-infos-inner">
+                                                <p class="dropify-filename">
+
+                                                    <!--<span class="file-icon"></span>-->
+                                                    <span class="dropify-filename-inner"></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <button type="submit" class='col l5 offset-l4 btn btn-large waves-effect button teal'>&emsp;
+                                &emsp;Agregar<i class="material-icons right">send</i></button>
+                        </div>
+                </form>
             </div>
-            <div class='row'>
-                    <button type="submit" class='col l5 offset-l4 btn btn-large waves-effect button teal' >&emsp; &emsp;Agregar<i class="material-icons right">send</i></button>
-            </div>
-            </form>
-          </div>
 
 
         </div>
-      </div>
+        </div>
 
 
-
-</main>
+    </main>
 {% endblock %}

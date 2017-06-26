@@ -732,19 +732,17 @@ def cambiarFavorito(request):
 
             # return render_to_response('main/baseAdmin.html', {'form':form,'test':test}, context_instance=RequestContext(request))
 
-
 def cambiarEstado(request):
     if request.method == 'GET':
         if request.is_ajax():
             estado = request.GET.get('estado')
             id_vendedor = request.GET.get('id')
             if estado == "true":
-                Usuario.objects.filter(id=id_vendedor).update(activo=True)
+                Usuario.objects.filter(info_id=id_vendedor).update(activo=True)
             else:
-                Usuario.objects.filter(id=id_vendedor).update(activo=False)
+                Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
             data = {"estado": estado}
             return JsonResponse(data)
-
 
 def editarPerfilAlumno(request):
     avatar = request.session['avatar']
