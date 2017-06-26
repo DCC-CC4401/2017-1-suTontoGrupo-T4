@@ -119,7 +119,7 @@ class Favoritos(models.Model):
     idVendedor = models.IntegerField()
 
     def __str__(self):
-        return self.idAlumno
+        return str(self.idAlumno)
 
     class Meta:
         db_table = 'Favoritos'
