@@ -114,7 +114,8 @@ def vendedorDashboard(request, cons_id):
                    "ganancias": gananciasDiariasArr,
                    "productos": productosArr,
                    "productosHoy": productosHoyArr,
-                   "productosPrecio": productosPrecioArr})
+                   "productosPrecio": productosPrecioArr,
+                   "avatar": request.session['avatar']})
 
 
 def adminEdit(request):
