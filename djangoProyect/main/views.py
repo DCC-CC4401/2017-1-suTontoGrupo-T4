@@ -209,7 +209,7 @@ def loginReq(request):
                 nombre = p.nombre
                 if (tipo == 0):
                     url = 'main/baseAdmin.html'
-                    id = p.id
+                    id = p.info.id
                     tipo = p.tipo
                     encontrado = True
                     avatar = p.avatar
@@ -217,7 +217,7 @@ def loginReq(request):
                     break
                 elif (tipo == 1):
                     url = 'main/baseAlumno.html'
-                    id = p.id
+                    id = p.info.id
                     avatar = p.avatar
                     tipo = p.tipo
                     encontrado = True
@@ -226,7 +226,7 @@ def loginReq(request):
                     break
                 elif (tipo == 2):
                     url = 'main/vendedor-fijo.html'
-                    id = p.id
+                    id = p.info.id
                     tipo = p.tipo
                     encontrado = True
                     horarioIni = p.horarioIni
@@ -241,7 +241,7 @@ def loginReq(request):
                     break
                 elif (tipo == 3):
                     url = 'main/vendedor-ambulante.html'
-                    id = p.id
+                    id = p.info.id
                     tipo = p.tipo
                     encontrado = True
                     avatar = p.avatar
@@ -264,7 +264,7 @@ def loginReq(request):
         # si son vendedores, crear lista de productos
         for p in Usuario.objects.all():
             if p.tipo == 2 or p.tipo == 3:
-                vendedores.append(p.id)
+                vendedores.append(p.info.id)
         vendedoresJson = simplejson.dumps(vendedores)
 
         # obtener alimentos en caso de que sea vendedor fijo o ambulante
@@ -413,7 +413,7 @@ def productoReq(request):
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
 
     for p in Usuario.objects.all():
-        if p.id == id:
+        if p.info.id == id:
             avatar = p.avatar
             horarioIni = p.horarioIni
             horarioFin = p.horarioFin
@@ -426,7 +426,7 @@ def vistaVendedorPorAlumno(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
         for p in Usuario.objects.all():
-            if p.id == id:
+            if p.info.id == id:
                 favorito = 0
                 for f in Favoritos.objects.all():
                     if request.session['id'] == f.idAlumno:
@@ -463,7 +463,7 @@ def vistaVendedorPorAlumnoSinLogin(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
         for p in Usuario.objects.all():
-            if p.id == id:
+            if p.info.id == id:
                 tipo = p.tipo
                 nombre = p.nombre
                 avatar = p.avatar
@@ -610,10 +610,10 @@ def inicioAlumno(request):
     vendedores = []
     # si son vendedores, crear lista de productos
     for p in Usuario.objects.all():
-        if p.id == id:
+        if p.info.id == id:
             avatar = p.avatar
         if p.tipo == 2 or p.tipo == 3:
-            vendedores.append(p.id)
+            vendedores.append(p.info.id)
     vendedoresJson = simplejson.dumps(vendedores)
     return render(request, 'main/baseAlumno.html', {"id": id, "vendedores": vendedoresJson, "avatarSesion": avatar,
                                                     "nombresesion": request.session['nombre']})
