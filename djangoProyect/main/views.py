@@ -177,7 +177,7 @@ def adminPOST(id, avatar, email, nombre, contraseña, request):
 
 def obtenerFavoritos(idVendedor):
     favoritos = 0
-    for fila in Favoritos.objects.raw('SELECT * FROM favoritos WHERE idVendedor = "' + str(idVendedor) + '"'):
+    for fila in Favoritos.objects.filter(idVendedor=str(idVendedor)):
         favoritos += 1
     return favoritos
 
@@ -270,7 +270,7 @@ def loginReq(request):
         # obtener alimentos en caso de que sea vendedor fijo o ambulante
         if tipo == 2 or tipo == 3:
             i = 0
-            for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
+            for producto in Comida.objects.filter(idVendedor=str(id)):
                 listaDeProductos.append(producto.info())
 
                 i += 1
@@ -406,7 +406,7 @@ def productoReq(request):
     # obtener alimentos en caso de que sea vendedor fijo o ambulante
     i = 0
     listaDeProductos = []
-    for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
+    for producto in Comida.objects.filter(idVendedor=str(id)):
         listaDeProductos.append(producto.info())
 
         i += 1
@@ -428,7 +428,7 @@ def vistaVendedorPorAlumno(request):
         for p in Usuario.objects.all():
             if p.id == id:
                 favorito = 0
-                for f in Favoritos.objects.raw('SELECT * FROM Favoritos'):
+                for f in Favoritos.objects.all():
                     if request.session['id'] == f.idAlumno:
                         if id == f.idVendedor:
                             favorito = 1
@@ -447,7 +447,7 @@ def vistaVendedorPorAlumno(request):
     # obtener alimentos
     i = 0
     listaDeProductos = []
-    for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
+    for producto in Comida.objects.filter(idVendedor=str(id)):
         listaDeProductos.append(producto.info())
 
         i += 1
@@ -480,7 +480,7 @@ def vistaVendedorPorAlumnoSinLogin(request):
                     # obtener alimentos
     i = 0
     listaDeProductos = []
-    for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id) + '"'):
+    for producto in Comida.objects.filter(idVendedor=str(id)):
         listaDeProductos.append(producto.info())
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
@@ -560,7 +560,7 @@ def editarDatos(request):
 
 
 def redirigirEditar(id_vendedor, request):
-    for usr in Usuario.objects.raw('SELECT * FROM usuario WHERE id == "' + str(id_vendedor) + '"'):
+    for usr in Usuario.objects.filter(id=str(id_vendedor)):
         id = usr.id
         nombre = usr.nombre
         email = usr.email
@@ -586,7 +586,7 @@ def redirigirEditar(id_vendedor, request):
         i = 0
         url = ''
         argumentos = {}
-        for producto in Comida.objects.raw('SELECT * FROM comida WHERE idVendedor = "' + str(id_vendedor) + '"'):
+        for producto in Comida.objects.filter(idVendedor=str(id_vendedor)):
             listaDeProductos.append(producto.info())
             i += 1
 
@@ -705,7 +705,7 @@ def editarPerfilAlumno(request):
     nombre = request.session['nombre']
     favoritos = []
     nombres = []
-    for fav in Favoritos.objects.raw("SELECT * FROM Favoritos"):
+    for fav in Favoritos.objects.all():
         if id == fav.idAlumno:
             favoritos.append(fav.idVendedor)
             vendedor = Usuario.objects.filter(id=fav.idVendedor).get()
@@ -891,7 +891,7 @@ def verificarEmail(request):
 def getStock(request):
     if request.method == "GET":
         stock = request.GET.get("nombre")
-        for producto in Comida.objects.raw("SELECT * FROM Comida"):
+        for producto in Comida.objects.all():
             if producto.nombre == request.GET.get("nombre"):
                 stock = producto.stock
         if request.GET.get("op") == "suma":
