@@ -192,7 +192,7 @@ def loginReq(request):
     if MyLoginForm.is_valid():
         vendedores = []
         for p in Usuario.objects.all():
-            if p.contraseña == password and p.email == email:
+            if p.info.password == password and p.email == email:
                 tipo = p.tipo
                 nombre = p.nombre
                 if (tipo == 0):
@@ -201,7 +201,7 @@ def loginReq(request):
                     tipo = p.tipo
                     encontrado = True
                     avatar = p.avatar
-                    contraseña = p.contraseña
+                    contraseña = p.info.password
                     break
                 elif (tipo == 1):
                     url = 'main/baseAlumno.html'
@@ -508,7 +508,7 @@ def editarVendedor(request):
 @csrf_exempt
 def editarDatos(request):
     id_vendedor = request.POST.get("id_vendedor")
-    usuario = Usuario.objects.filter(id=id_vendedor)
+    usuario = Usuario.objects.filter(info_id=id_vendedor)
 
     nombre = request.POST.get("nombre")
     tipo = request.POST.get("tipo")
@@ -548,7 +548,7 @@ def editarDatos(request):
 
 
 def redirigirEditar(id_vendedor, request):
-    for usr in Usuario.objects.filter(id=str(id_vendedor)):
+    for usr in Usuario.objects.filter(info_id=str(id_vendedor)):
         id = usr.info.id
         nombre = usr.nombre
         email = usr.email
@@ -768,7 +768,7 @@ def editarUsuarioAdmin(request):
         if nombre != None:
             Usuario.objects.filter(id=userID).update(nombre=nombre)
         if contraseña != None:
-            Usuario.objects.filter(id=userID).update(contraseña=contraseña)
+            Usuario.objects.get(id=userID).set_password(contraseña)
         if avatar != None:
             Usuario.objects.filter(id=userID).update(avatar=avatar)
 
@@ -822,7 +822,7 @@ def editarUsuario(request):
         if nombre != None:
             Usuario.objects.filter(id=userID).update(nombre=nombre)
         if contraseña != None:
-            Usuario.objects.filter(id=userID).update(contraseña=contraseña)
+            Usuario.objects.get(id=userID).set_password(contraseña)
         if tipo != None:
             Usuario.objects.filter(id=userID).update(tipo=tipo)
         if avatar != None:
