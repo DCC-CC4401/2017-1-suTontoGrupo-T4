@@ -12,13 +12,12 @@ from django.utils.formats import get_format
 class Usuario(models.Model):
     info = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True, )
-    #id = models.AutoField(primary_key=False)
     nombre = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
+    #email = models.CharField(max_length=200)
     tipos = ((0, 'admin'), (1, 'alumno'), (2, 'fijo'), (3, 'ambulante'))
     tipo = models.IntegerField(choices=tipos)
     avatar = models.ImageField(upload_to='avatars')
-    contraseña = models.CharField(max_length=200)
+    #contraseña = models.CharField(max_length=200)
     activo = models.BooleanField(default=False, blank=True)
     litaFormasDePago = (
         (0, 'Efectivo'),
@@ -85,9 +84,10 @@ class Usuario(models.Model):
 
 
 class Comida(models.Model):
-    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
-    nombre = models.CharField(max_length=200, primary_key=True)
+    idComida = models.AutoField(primary_key=True)
+    idVendedor = models.ForeignKey(User, on_delete=models.CASCADE,
+                               primary_key=False, )
+    nombre = models.CharField(max_length=200, primary_key=False)
     listaCategorias = (
         (0, 'Cerdo'),
         (1, 'Chino'),
@@ -107,10 +107,10 @@ class Comida(models.Model):
         (15, 'Vegano'),
         (16, 'Vegetariano'),
     )
-    categorias = MultiSelectField(choices=listaCategorias)
-    descripcion = models.CharField(max_length=500)
-    stock = models.PositiveSmallIntegerField(default=0)
-    precio = models.PositiveSmallIntegerField(default=0)
+    categorias = MultiSelectField(choices=listaCategorias, primary_key=False)
+    descripcion = models.CharField(max_length=500, primary_key=False)
+    stock = models.PositiveSmallIntegerField(default=0,primary_key=False)
+    precio = models.PositiveSmallIntegerField(default=0,primary_key=False)
     imagen = models.ImageField(upload_to="productos")
 
     def __str__(self):
@@ -132,11 +132,14 @@ class Comida(models.Model):
 
 
 class Favoritos(models.Model):
-    id = models.AutoField(primary_key=True)
-    idAlumno = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
-    idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
+    idAlumno = models.ForeignKey(Usuario,
+                                    related_name="id_alumno",
+                                    on_delete=models.CASCADE,
+                                    primary_key=False, )
+    idVendedor = models.ForeignKey(Usuario,
+                                      related_name="id_vendedor",
+                                      on_delete=models.CASCADE,
+                                      primary_key=False, )
 
     def __str__(self):
         return str(self.idAlumno)
@@ -146,7 +149,6 @@ class Favoritos(models.Model):
 
 
 class Imagen(models.Model):
-    id = models.AutoField(primary_key=True)
     imagen = models.ImageField(upload_to='avatars')
 
     def __str__(self):
@@ -161,7 +163,7 @@ class Transacciones(models.Model):
     idTransaccion = models.AutoField(primary_key=True)
     nombreComida = models.CharField(max_length=200, blank=True, null=True)
     idVendedor = models.OneToOneField(User, on_delete=models.CASCADE,
-                                primary_key=True, )
+                                primary_key=False, )
     precio = models.IntegerField()
     fechaAhora = str(timezone.now()).split(' ', 1)[0]
     fecha = models.CharField(max_length=200, default=fechaAhora)
