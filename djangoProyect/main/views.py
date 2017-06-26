@@ -29,7 +29,7 @@ def index(request):
     # lista de vendedores
     for p in Usuario.objects.all():
         if p.tipo == 2 or p.tipo == 3:
-            vendedores.append(p.id)
+            vendedores.append(p.info.id)
     vendedoresJson = simplejson.dumps(vendedores)
     # actualizar vendedores fijos
     for p in Usuario.objects.all():
