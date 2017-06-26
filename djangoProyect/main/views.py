@@ -386,7 +386,7 @@ def productoReq(request):
             Formulario = GestionProductosForm(request.POST)
             if Formulario.is_valid():
                 producto = Comida()
-                producto.idVendedor = id
+                producto.idVendedor = User.objects.get(email=email)
                 producto.nombre = request.POST.get("nombre")
                 producto.imagen = request.FILES.get("comida")
                 producto.precio = request.POST.get("precio")
@@ -401,7 +401,7 @@ def productoReq(request):
     # obtener alimentos en caso de que sea vendedor fijo o ambulante
     i = 0
     listaDeProductos = []
-    for producto in Comida.objects.filter(idVendedor=str(id)):
+    for producto in Comida.objects.filter(idVendedor_id=id):
         listaDeProductos.append(producto.info())
 
         i += 1
