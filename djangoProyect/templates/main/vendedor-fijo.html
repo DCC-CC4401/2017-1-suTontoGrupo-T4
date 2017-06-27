@@ -149,11 +149,11 @@
                     </div>-->
 
                     <!-- Boton para Editar -->
-                    {#                <div class="col s4 offset-s8 right-align"> <!--offset-s4-->#}
-                    {#                    <a class="btn-floating activator waves-effect waves-light darken-2">#}
-                    {#                          <i class="material-icons">mode_edit</i>#}
-                    {#                      </a>#}
-                    {#                 </div>#}
+                    {% comment %}     <div class="col s4 offset-s8 right-align"> <!--offset-s4-->
+                                       <a class="btn-floating activator waves-effect waves-light darken-2">
+                                              <i class="material-icons">mode_edit</i>
+                                         </a>
+                                     </div>{% endcomment %}
                 </div>
             </div>
         </div>
@@ -230,7 +230,7 @@
 
                                             //eliminar producto
                                             document.write("<div class='col s4 m6 l4 offset-s1'>");
-                                            document.write('<div class="row"> <button  type="button" onclick ="eliminarProducto(' + "\'" + productos[i][0] + "\'" + ');" class="btn-large waves-effect button teal" >Eliminar producto</button> </div>');
+                                            document.write('<div class="row"> <button  type="button" onclick ="eliminarProducto(' + "\'" + productos[i][6] + "\'" + ');" class="btn-large waves-effect button teal" >Eliminar producto</button> </div>');
                                             document.write("</div>");
                                             //salir
                                             document.write("<a href='#!' class='modal-action modal-close waves-effect waves-green btn-flat'><i class='large material-icons'>close</i></a>");
@@ -406,20 +406,7 @@
         }
 
         function bajarStock(id) {
-            //crea la transaccion en la bdd
-           /* var datosTransaccion = "nombre=" + id + "&" + "idUsuario=" + "{{id}}";
-            $.ajax({
-                url:{% url 'createTransaction' %},
-                type: "GET",
-                data: datosTransaccion,
-                dataType: "json",
-                success: function (data) {
-                    //alert("funciono");
-                },
-                error: function (data) {
-                    alert("error in getting from server");
-                },
-            }); */
+
 
             $.ajax({
                 url:{% url 'getStock' %},
