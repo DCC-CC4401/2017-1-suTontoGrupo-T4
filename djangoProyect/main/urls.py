@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^editarProducto/', views.editarProducto, name='editarProducto'),
     url(r'^cambiarFavorito/', views.cambiarFavorito, name='cambiarFavorito'),
     url(r'^vistaVendedorPorAlumnoSinLogin/', views.vistaVendedorPorAlumnoSinLogin, name='vistaVendedorPorAlumnoSinLogin'),
+
+    #url(r'^vistaVendedorPorAlumnoSinLogin1/', views.vistaVendedorPorAlumnoSinLogin1,
+      #  name='vistaVendedorPorAlumnoSinLogin1'),
     url(r'^editarPerfilAlumno/', views.editarPerfilAlumno,name='editarPerfilAlumno'),
     url(r'^procesarPerfilAlumno/', views.procesarPerfilAlumno,name='procesarPerfilAlumno'),
     url(r'^editarUsuario/', views.editarUsuario, name='editarUsuario'),

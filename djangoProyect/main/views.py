@@ -348,6 +348,7 @@ def loginReq(request):
                           "listaDeProductos": listaDeProductos, "activo": activo, "formasDePago": formasDePago}
 
         # enviar a vista respectiva de usuario
+        print(url)
         return render(request, url, argumentos)
 
     # retornar en caso de datos invalidos
@@ -513,27 +514,28 @@ def vistaVendedorPorAlumno(request):
 
 
 def vistaVendedorPorAlumnoSinLogin(request):
-    if request.method == 'POST':
-        id = int(request.POST.get("id"))
-        for p in Usuario.objects.all():
-            if p.info.id == id:
-                tipo = p.tipo
-                nombre = p.nombre
-                avatar = p.avatar
-                formasDePago = p.formasDePago
-                horarioIni = p.horarioIni
-                horarioFin = p.horarioFin
-                activo = p.activo
-                if tipo == 3:
-                    url = 'main/vendedor-ambulante-vistaAlumno-sinLogin.html'
-                    break
-                if tipo == 2:
-                    url = 'main/vendedor-fijo-vistaAlumno-sinLogin.html'
-                    break
-    # obtener alimentos
+
+    id=1
+    for p in Usuario.objects.all():
+        if p.info.id == id:
+            tipo = p.tipo
+            nombre = p.nombre
+            avatar = p.avatar
+            formasDePago = p.formasDePago
+            horarioIni = p.horarioIni
+            horarioFin = p.horarioFin
+            activo = p.activo
+            if tipo == 3:
+                url = 'main/vendedor-ambulante-vistaAlumno-sinLogin.html'
+                break
+            if tipo == 2:
+                url = 'main/vendedor-fijo-vistaAlumno-sinLogin.html'
+                break
+
+                # obtener alimentos
     i = 0
     listaDeProductos = []
-    for producto in Comida.objects.filter(idVendedor=str(id)):
+    for producto in Comida.objects.filter(idVendedor=id):
         listaDeProductos.append(producto.info())
         i += 1
     listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
@@ -541,6 +543,36 @@ def vistaVendedorPorAlumnoSinLogin(request):
                   {"nombre": nombre, "tipo": tipo, "id": id, "avatar": avatar, "listaDeProductos": listaDeProductos,
                    "formasDePago": formasDePago, "horarioIni": horarioIni, "horarioFin": horarioFin, "activo": activo})
 
+def vistaVendedorPorAlumnoSinLogin1(request):
+    id=1;
+    for p in Usuario.objects.all():
+        if p.info.id == id:
+            tipo = p.tipo
+            nombre = p.nombre
+            avatar = p.avatar
+            formasDePago = p.formasDePago
+            horarioIni = p.horarioIni
+            horarioFin = p.horarioFin
+            activo = p.activo
+            if tipo == 3:
+                url = 'main/vendedor-ambulante-vistaAlumno-sinLogin.html'
+                break
+            if tipo == 2:
+                url = 'main/vendedor-fijo-vistaAlumno-sinLogin.html'
+                print("adentrooo")
+                break
+    # obtener alimentos
+    i = 0
+    listaDeProductos = []
+    print("holaaaa")
+    for producto in Comida.objects.filter(idVendedor_id=id):
+        listaDeProductos.append(producto.info())
+        i += 1
+    listaDeProductos = simplejson.dumps(listaDeProductos, ensure_ascii=False).encode('utf8')
+    print("aqui si llega")
+    return render(request,'main/vendedor-fijo-vistaAlumno-sinLogin.html',
+                  {"nombre": nombre, "tipo": tipo, "id": id, "avatar": avatar, "listaDeProductos": listaDeProductos,
+                   "formasDePago": formasDePago, "horarioIni": horarioIni, "horarioFin": horarioFin, "activo": activo})
 
 @csrf_exempt
 def editarVendedor(request):
