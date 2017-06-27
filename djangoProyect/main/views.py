@@ -592,6 +592,7 @@ def editarDatos(request):
         formasDePago += '1,'
     if not (request.POST.get("formaDePago2") is None) and request.POST.get("formaDePago2") != "":
         formasDePago += '2,'
+        
     if not (request.POST.get("formaDePago3") is None) and request.POST.get("formaDePago3") != "":
         formasDePago += '3,'
 
