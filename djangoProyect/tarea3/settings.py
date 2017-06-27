@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'main',
 ]
 
@@ -115,6 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Testing
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=main,tarea3'
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
