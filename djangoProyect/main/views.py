@@ -477,8 +477,8 @@ def vistaVendedorPorAlumno(request):
             if p.info.id == id:
                 favorito = 0
                 for f in Favoritos.objects.all():
-                    if request.session['id'] == f.idAlumno:
-                        if id == f.idVendedor:
+                    if request.session['id'] == f.idAlumno_id:
+                        if id == f.idVendedor_id:
                             favorito = 1
                 tipo = p.tipo
                 nombre = p.nombre
@@ -486,6 +486,7 @@ def vistaVendedorPorAlumno(request):
                 formasDePago = p.formasDePago
                 horarioIni = p.horarioIni
                 horarioFin = p.horarioFin
+                activo = p.activo
                 if tipo == 3:
                     url = 'main/vendedor-ambulante-vistaAlumno.html'
                     break
@@ -504,7 +505,7 @@ def vistaVendedorPorAlumno(request):
     return render(request, url, {"nombre": nombre, "nombresesion": request.session['nombre'], "tipo": tipo, "id": id,
                                  "avatar": avatar, "listaDeProductos": listaDeProductos, "avatarSesion": avatarSesion,
                                  "favorito": favorito, "formasDePago": formasDePago, "horarioIni": horarioIni,
-                                 "horarioFin": horarioFin, })
+                                 "horarioFin": horarioFin, "activo": activo})
 
 
 def vistaVendedorPorAlumnoSinLogin(request):
@@ -525,7 +526,7 @@ def vistaVendedorPorAlumnoSinLogin(request):
                 if tipo == 2:
                     url = 'main/vendedor-fijo-vistaAlumno-sinLogin.html'
                     break
-                    # obtener alimentos
+    # obtener alimentos
     i = 0
     listaDeProductos = []
     for producto in Comida.objects.filter(idVendedor=str(id)):
