@@ -672,7 +672,7 @@ def borrarProducto(request):
     if request.method == 'GET':
         if request.is_ajax():
             comida = request.GET.get('eliminar')
-            Comida.objects.filter(nombre=comida).delete()
+            Comida.objects.filter(idComida=comida).delete()
             data = {"eliminar": comida}
             return JsonResponse(data)
 
@@ -682,13 +682,13 @@ def editarProducto(request):
     if request.method == 'POST':
         if request.is_ajax():
             form = editarProductosForm(data=request.POST, files=request.FILES)
-            nombreOriginal = request.POST.get("nombreOriginal")
+            nombreOriginal = request.POST.get('nombreOriginal')
             nuevoNombre = request.POST.get('nombre')
             nuevoPrecio = (request.POST.get('precio'))
             nuevoStock = (request.POST.get('stock'))
             nuevaDescripcion = request.POST.get('descripcion')
             nuevaCategoria = (request.POST.get('categoria'))
-            nuevaImagen = request.FILES.get("comida")
+            nuevaImagen = request.FILES.get('comida')
             if nuevoPrecio != "":
                 Comida.objects.filter(idComida=nombreOriginal).update(precio=int(nuevoPrecio))
             if nuevoStock != "":
