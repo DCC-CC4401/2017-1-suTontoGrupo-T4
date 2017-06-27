@@ -16,19 +16,26 @@ psw:adminpepe
 """
 
 import os
+from os.path import join, dirname, abspath
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = dirname(dirname(abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'c2@8+7xd+&j#o1*l#hw(yhoj&8$g@=p$e^-(1^!a7a9x&p@765'
+dotenv_path = join(dirname(__file__), '.env')
+try:
+# Loading Environment variables!
+    load_dotenv(dotenv_path)
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
+    DEBUG = bool(os.environ.get('DEBUG', True))
+except:
+    print("Couldn't load environemt variables! Check if you have an .env file")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 

@@ -23,6 +23,7 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from multiselectfield import MultiSelectField
 from django.core.files.storage import default_storage
+from tarea3.settings import GOOGLE_MAPS_API_KEY
 
 
 # Create your views here.
@@ -38,7 +39,9 @@ def index(request):
         p.actualizar()
     vendedoresJson = simplejson.dumps(vendedores)
 
-    return render(request, 'main/baseAlumno-sinLogin.html', {"vendedores": vendedoresJson})
+    return render(request, 'main/baseAlumno-sinLogin.html',
+                  {'vendedores': vendedoresJson,
+                   'GOOGLE_MAPS_API_KEY': GOOGLE_MAPS_API_KEY})
 
 
 def volverVFijo(request):
