@@ -705,10 +705,6 @@ def editarProducto(request):
                 Comida.objects.filter(nombre=nombreOriginal).update(imagen='/productos/' + filename)
 
             if nuevoNombre != "":
-                # if Comida.objects.filter(nombre=nuevoNombre).exists() and nuevoNombre != nombreOriginal:
-                #   data = {"respuesta": "repetido"}
-                #  return JsonResponse(data)
-                # else:
                 Comida.objects.filter(idComida=nombreOriginal).update(nombre=nuevoNombre)
 
             data = {"respuesta": nombreOriginal}
@@ -743,7 +739,7 @@ def cambiarEstado(request):
             if estado == "true":
                 Usuario.objects.filter(info_id=id_vendedor).update(activo=True)
             else:
-                    Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
+                Usuario.objects.filter(info_id=id_vendedor).update(activo=False)
             data = {"estado": estado}
             return JsonResponse(data)
 
@@ -929,7 +925,7 @@ def registerAdmin(request):
 def verificarEmail(request):
     if request.is_ajax() or request.method == 'POST':
         email = request.POST.get("email")
-        if Usuario.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             data = {"respuesta": "repetido"}
             return JsonResponse(data)
         else:
